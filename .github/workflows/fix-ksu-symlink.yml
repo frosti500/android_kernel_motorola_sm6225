@@ -23,7 +23,7 @@ jobs:
 
       - name: Clone KernelSU-Next as plain files (no nested .git)
         run: |
-          git clone https://github.com/rifsxd/KernelSU-Next -b next KernelSU-Next
+          git clone https://github.com/rifsxd/KernelSU-Next KernelSU-Next
           rm -rf KernelSU-Next/.git
 
       - name: Fix drivers/kernelsu symlink
