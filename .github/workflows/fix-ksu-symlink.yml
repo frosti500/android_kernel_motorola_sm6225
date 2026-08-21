@@ -1,4 +1,4 @@
-name: Fix KSU symlink
+name: Fix KSU submodule and symlink
 
 on:
   workflow_dispatch:
@@ -7,30 +7,40 @@ permissions:
   contents: write
 
 jobs:
-  fix-symlink:
+  fix-ksu:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout kernel source
+      - name: Checkout kernel source (with submodules)
         uses: actions/checkout@v4
         with:
           ref: lineage-23.2
+          submodules: true
           persist-credentials: true
 
-      - name: Replace symlink with real directory copy
+      - name: Remove submodule reference for KernelSU-Next
+        run: |
+          git submodule deinit -f KernelSU-Next || true
+          git rm -f KernelSU-Next || true
+          rm -rf .git/modules/KernelSU-Next
+          rm -rf KernelSU-Next
+
+      - name: Re-clone KernelSU-Next as plain files
+        run: |
+          git clone https://github.com/rifsxd/KernelSU-Next -b next KernelSU-Next
+          rm -rf KernelSU-Next/.git
+
+      - name: Fix drivers/kernelsu symlink
         run: |
           if [ -L drivers/kernelsu ]; then
             rm drivers/kernelsu
-            cp -rL KernelSU-Next/kernel drivers/kernelsu
-            echo "Symlink replaced with real folder."
-            ls -la drivers/kernelsu | head -10
-          else
-            echo "drivers/kernelsu is not a symlink, nothing to fix."
           fi
+          cp -r KernelSU-Next/kernel drivers/kernelsu
+          ls -la drivers/kernelsu | head -10
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Replace drivers/kernelsu symlink with real directory copy" || echo "Nothing to commit"
+          git commit -m "Convert KernelSU-Next submodule to real files, fix drivers/kernelsu"
           git push origin lineage-23.2
