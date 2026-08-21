@@ -1,0 +1,36 @@
+name: Fix KSU symlink
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-symlink:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kernel source
+        uses: actions/checkout@v4
+        with:
+          ref: lineage-23.2
+          persist-credentials: true
+
+      - name: Replace symlink with real directory copy
+        run: |
+          if [ -L drivers/kernelsu ]; then
+            rm drivers/kernelsu
+            cp -rL KernelSU-Next/kernel drivers/kernelsu
+            echo "Symlink replaced with real folder."
+            ls -la drivers/kernelsu | head -10
+          else
+            echo "drivers/kernelsu is not a symlink, nothing to fix."
+          fi
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Replace drivers/kernelsu symlink with real directory copy" || echo "Nothing to commit"
+          git push origin lineage-23.2
