@@ -1672,6 +1672,7 @@ static ssize_t pagemap_read(struct file *file, char __user *buf,
 		if (end < start_vaddr || end > end_vaddr)
 			end = end_vaddr;
 		ret = mmap_read_lock_killable(mm);
+		ret = mmap_read_lock_killable(mm);
 if (ret)
 	goto out_free;
 #ifdef CONFIG_KSU_SUSFS_SUS_MAP
