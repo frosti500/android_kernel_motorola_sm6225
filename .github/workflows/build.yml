@@ -1,0 +1,53 @@
+name: Test Kernel Compile
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kernel source
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison flex libssl-dev libncurses-dev lz4 ccache
+
+      - name: Get clang toolchain (same as Crave: clang-r563880c)
+        run: |
+          mkdir -p clang
+          curl -LSs "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r563880c.tar.gz" -o clang.tar.gz
+          tar -xzf clang.tar.gz -C clang
+
+      - name: Get kernel build tools (pahole, dtc, lz4)
+        run: |
+          mkdir -p kernel-build-tools
+          curl -LSs "https://android.googlesource.com/kernel/prebuilts/build-tools/+archive/refs/heads/main/linux-x86.tar.gz" -o kbt.tar.gz
+          tar -xzf kbt.tar.gz -C kernel-build-tools
+
+      - name: Build kernel
+        run: |
+          export PATH=$GITHUB_WORKSPACE/clang/bin:$GITHUB_WORKSPACE/kernel-build-tools/bin:$PATH
+          export ARCH=arm64
+          export LLVM=1
+          export LLVM_IAS=1
+          export CC="clang"
+          export LD=ld.lld
+          export TARGET_BOARD_PLATFORM=bengal
+
+          mkdir -p out
+          make O=out vendor/bengal-perf_defconfig
+          scripts/kconfig/merge_config.sh -m -O out out/.config arch/arm64/configs/vendor/ext_config/moto-bengal.config
+          scripts/kconfig/merge_config.sh -m -O out out/.config arch/arm64/configs/vendor/ext_config/devon-default.config
+          make O=out olddefconfig
+          make O=out -j$(nproc)
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-output
+          path: |
+            out/arch/arm64/boot/Image*
+            out/.config
