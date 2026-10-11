@@ -1,3 +1,4 @@
+#[cfg(unix)]
 use std::os::unix::process::CommandExt;
 use std::{
     cmp::Ordering,

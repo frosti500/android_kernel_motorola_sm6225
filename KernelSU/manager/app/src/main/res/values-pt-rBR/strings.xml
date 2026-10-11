@@ -105,6 +105,7 @@
     <string name="flashing">Flashando</string>
     <string name="flash_success">Flash bem-sucedido</string>
     <string name="flash_failed">Flash falhou</string>
+    <string name="selected_lkm">LKM selecionado: %s</string>
     <string name="save_log">Salvar registros</string>
     <string name="log_saved">Registros salvos</string>
     <string name="settings_sucompat">Redirecionar binário su</string>
@@ -139,6 +140,7 @@
     <string name="module_repo">Repositório de módulos</string>
     <string name="module_sort_star_first">Ordenar (estrelas primeiro)</string>
     <string name="reboot_soft">Reinicialização suave</string>
+    <string name="about_anime_character_sticker"><![CDATA[As imagens dos arquivos com adesivos de personagens de anime são protegidas por direitos autorais de %1$s, e a propriedade intelectual da marca nas imagens pertence a %2$s. Antes de usar esses arquivos, além de respeitar os direitos autorais de %3$s, você também precisa obter a autorização dos dois autores para usar esse conteúdo artístico.]]></string>
     <string name="get_source_code">Verifique o código-fonte</string>
     <string name="get_source_code_detail">Confira o código-fonte no GitHub</string>
     <string name="join_telegram_group">Junte-se à comunidade</string>
@@ -308,6 +310,11 @@
     <string name="kernel_flashing">Instalando o kernel</string>
     <string name="warning_of_meta_module_title">Módulo Meta necessário</string>
     <string name="warning_of_meta_module_summary">Este módulo deseja montar /system, o que é gerenciado pelo metamódulo. Sem ele, o módulo pode não funcionar</string>
+    <string name="sort_name_asc">Ordem crescente de nomes</string>
+    <string name="sort_name_desc">Nome em ordem decrescente</string>
+    <string name="sort_install_time_new">Tempo de instalação (Novo)</string>
+    <string name="sort_install_time_old">Tempo de instalação (Antigo)</string>
+    <string name="sort_size_asc">Ordem decrescente de tamanho</string>
     <string name="sort_usage_freq">Frequência de utilização</string>
     <string name="no_apps_in_category">Não há candidaturas nesta categoria</string>
     <string name="persistent">Persistente</string>
@@ -366,6 +373,8 @@
     <string name="sus_maps_description_text">Oculta os caminhos reais dos mapeamentos de memória em /proc/self/[maps|smaps|smaps_rollup|map_files|mem|pagemap]. Observação: este recurso não suporta a ocultação de mapeamentos de memória anônimos, nem pode ocultar hooks embutidos ou hooks PLT causados pela própria biblioteca injetada</string>
     <string name="sus_maps_warning">Aviso importante: Para aplicações com mecanismos de detecção de injeção bem implementados, este recurso pode não ser eficaz para contornar a detecção</string>
     <string name="sus_maps_debug_info">Primeiro, encontre o PID e o UID do aplicativo de destino usando o comando `ps -enf`. Em seguida, verifique os caminhos relevantes em `/proc/&lt;pid&gt;/maps` e compare os números dos dispositivos com os de `/proc/1/mountinfo` para garantir a consistência. A função de ocultação do mapa só funcionará corretamente se os números dos dispositivos coincidirem</string>
+    <string name="require_manager_version">A versão atual do gerenciador KernelSU, %1$d, é muito antiga para o funcionamento correto do KernelSU. Atualize o gerenciador para a versão %2$d ou superior!</string>
+    <string name="require_kernel_version">A versão atual do KernelSU, %1$d, é muito antiga para o gerenciador funcionar corretamente. Atualize para a versão %2$d ou superior!</string>
     <string name="umount_path_manager">Gestão de Caminhos de Umount</string>
     <string name="umount_path_manager_summary">Gerenciar caminhos de desmontagem do kernel</string>
     <string name="no_any_umount_path">Não existem caminhos de desmontagem</string>
@@ -527,4 +536,5 @@
     <string name="manager_update_details">Versão: %1$s (%2$d)\nArquitetura: %3$s</string>
     <string name="settings_check_beta_update">Confira as atualizações beta</string>
     <string name="settings_check_beta_update_summary">Verificação automática de versões beta a partir da ramificação principal</string>
+    <string name="sort_size_desc">Ordem decrescente de tamanho</string>
 </resources>

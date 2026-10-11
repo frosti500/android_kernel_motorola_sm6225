@@ -15,7 +15,7 @@ use anyhow::{Context, Result, ensure};
 use log::{info, warn};
 
 use crate::{
-    android::module::{self, ModuleType::All, ScriptWait},
+    android::module::{self, ModuleType::All},
     assets, defs,
 };
 
@@ -148,6 +148,7 @@ pub fn ensure_symlink(module_path: &Path) -> Result<()> {
     }
 
     // Create symlink
+    #[cfg(unix)]
     std::os::unix::fs::symlink(module_path, symlink_path)
         .with_context(|| format!("Failed to create symlink to {}", module_path.display()))?;
 
@@ -302,13 +303,13 @@ pub fn exec_mount_script(module_dir: &str) -> Result<()> {
 }
 
 /// Execute metamodule script for a specific stage
-pub fn exec_stage_script(stage: &str, wait: ScriptWait) -> Result<()> {
+pub fn exec_stage_script(stage: &str, block: bool) -> Result<()> {
     let Some(script_path) = check_metamodule_script(&format!("{stage}.sh")) else {
         return Ok(());
     };
 
     info!("Executing metamodule {stage}.sh");
-    module::exec_script(&script_path, wait)?;
+    module::exec_script(&script_path, block)?;
     info!("Metamodule {stage}.sh executed successfully");
     Ok(())
 }
